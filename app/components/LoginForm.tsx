@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { login } from "../(auth)/login/actions";
-import { useFormStatus } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -17,9 +17,19 @@ function SubmitButton() {
     );
 }
 
+const initialState = {
+    success: "",
+    errors: {
+        email: "",
+        password: "",
+    },
+};
+
 export function LoginForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    const [state, formAction] = useFormState(login, initialState);
 
     return (
         <Card className="w-[350px]">
@@ -27,7 +37,7 @@ export function LoginForm() {
                 <CardTitle>Iniciar Sesión</CardTitle>
             </CardHeader>
             <CardContent>
-                <form className="space-y-4" action={login}>
+                <form className="space-y-4" action={formAction}>
                     <div className="space-y-2">
                         <Label htmlFor="email">Usuario</Label>
                         <Input
@@ -36,8 +46,12 @@ export function LoginForm() {
                             name="email"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            required
                         />
+                        {state.errors?.email && (
+                            <p className="text-red-500 text-xs">
+                                {state.errors.email}
+                            </p>
+                        )}
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="password">Contraseña</Label>
@@ -47,8 +61,12 @@ export function LoginForm() {
                             name="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            required
                         />
+                        {state.errors?.password && (
+                            <p className="text-red-500 text-xs">
+                                {state.errors.password}
+                            </p>
+                        )}
                     </div>
                     <SubmitButton />
                 </form>

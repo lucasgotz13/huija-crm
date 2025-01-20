@@ -5,7 +5,16 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
 
-export async function login(formData: FormData) {
+import { z } from "zod";
+
+const loginSchema = z.object({
+    email: z.string().trim().min(2, { message: "Este campo es requerido" }),
+    password: z.string().min(8, {
+        message: "La contraseña tiene que ser mínimo de 8 carácteres",
+    }),
+});
+
+export async function login(prevState: any, formData: FormData) {
     const supabase = await createClient();
 
     // type-casting here for convenience
@@ -14,13 +23,30 @@ export async function login(formData: FormData) {
         email: formData.get("email") as string,
         password: formData.get("password") as string,
     };
-    data.email = `${data.email}@huija.com`;
+    const validatedData = loginSchema.safeParse(data);
+    if (!validatedData.success) {
+        const formFieldErrors = validatedData.error.flatten().fieldErrors;
+        console.log(formFieldErrors);
+        return {
+            errors: {
+                email: formFieldErrors?.email,
+                password: formFieldErrors?.password,
+            },
+        };
+    }
     console.log(data);
+    data.email = `${data.email}@huija.com`;
 
     const { error } = await supabase.auth.signInWithPassword(data);
 
     if (error) {
-        redirect("/error");
+        // redirect("/error");
+        return {
+            errors: {
+                email: "Credenciales inválidas",
+                password: "Credenciales inválidas",
+            },
+        };
     }
 
     revalidatePath("/", "layout");
