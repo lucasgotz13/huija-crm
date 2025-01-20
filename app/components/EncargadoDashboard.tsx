@@ -50,7 +50,8 @@ export function EncargadoDashboard() {
                 console.log(error);
             }
             console.log(data);
-            setItems(data ?? []);
+            const sortedData = data?.sort((a, b) => a.id - b.id) ?? [];
+            setItems(sortedData);
         };
         fetchItems();
     }, []);

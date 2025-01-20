@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -13,6 +13,7 @@ import {
     DialogTrigger,
 } from "./ui/dialog";
 import { AddIngredienteForm } from "./AddIngredienteForm";
+import { createClient } from "@/utils/supabase/client";
 
 type Ingrediente = {
     id: number;
@@ -22,49 +23,28 @@ type Ingrediente = {
 };
 
 export function CocinaInventario() {
-    const [ingredientes, setIngredientes] = useState<Ingrediente[]>([
-        { id: 1, nombre: "Tomates", cantidad: 10, disponible: true },
-        { id: 2, nombre: "Lechuga", cantidad: 5, disponible: true },
-        { id: 3, nombre: "Carne", cantidad: 20, disponible: false },
-    ]);
+    const [ingredientes, setIngredientes] = useState<Ingrediente[]>([]);
 
-    const [editingId, setEditingId] = useState<number | null>(null);
+    const supabase = createClient();
 
-    const handleEdit = (id: number) => {
-        setEditingId(id);
-    };
+    useEffect(() => {
+        const fetchIngredientes = async () => {
+            const { data, error } = await supabase
+                .from("ingredientes")
+                .select("*");
 
-    const handleSave = (
-        id: number,
-        newCantidad: number,
-        newDisponible: boolean
-    ) => {
-        setIngredientes(
-            ingredientes.map((ing) =>
-                ing.id === id
-                    ? {
-                          ...ing,
-                          cantidad: newCantidad,
-                          disponible: newDisponible,
-                      }
-                    : ing
-            )
-        );
-        setEditingId(null);
-    };
+            if (error) {
+                console.error(error);
+                return;
+            }
 
-    const handleAddIngrediente = (
-        nuevoIngrediente: Omit<Ingrediente, "id">
-    ) => {
-        setIngredientes([
-            ...ingredientes,
-            { ...nuevoIngrediente, id: Date.now() },
-        ]);
-    };
-
-    const handleDelete = (id: number) => {
-        setIngredientes(ingredientes.filter((ing) => ing.id !== id));
-    };
+            if (data) {
+                setIngredientes(data.sort((a, b) => a.id - b.id));
+                console.log(data);
+            }
+        };
+        fetchIngredientes();
+    }, []);
 
     return (
         <div className="space-y-4">
@@ -76,12 +56,12 @@ export function CocinaInventario() {
                     <DialogHeader>
                         <DialogTitle>Agregar Nuevo Ingrediente</DialogTitle>
                     </DialogHeader>
-                    <AddIngredienteForm onAdd={handleAddIngrediente} />
+                    <AddIngredienteForm accion="Agregar" ingrediente={null} />
                 </DialogContent>
             </Dialog>
 
             <ul className="space-y-4">
-                {ingredientes.map((ing) => (
+                {/* {ingredientes.map((ing) => (
                     <li key={ing.id} className="bg-white p-4 rounded-lg shadow">
                         {editingId === ing.id ? (
                             <div className="space-y-2">
@@ -139,6 +119,41 @@ export function CocinaInventario() {
                                 </div>
                             </div>
                         )}
+                    </li>
+                ))} */}
+                {ingredientes.map((ing) => (
+                    <li key={ing.id} className="bg-white p-4 rounded-lg shadow">
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <h3 className="font-bold">{ing.nombre}</h3>
+                                <p>Cantidad: {ing.cantidad}</p>
+                                <p>
+                                    Disponible: {ing.disponible ? "Sí" : "No"}
+                                </p>
+                            </div>
+                            <div className="space-x-2">
+                                {/* <Button onClick={() => handleEdit(ing.id)}>
+                                    Editar
+                                </Button> */}
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button>Editar</Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>
+                                                Editar ingrediente
+                                            </DialogTitle>
+                                        </DialogHeader>
+                                        <AddIngredienteForm
+                                            accion="Editar"
+                                            ingrediente={ing}
+                                        />
+                                    </DialogContent>
+                                </Dialog>
+                                <Button variant="destructive">Borrar</Button>
+                            </div>
+                        </div>
                     </li>
                 ))}
             </ul>
