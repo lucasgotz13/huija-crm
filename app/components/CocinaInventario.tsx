@@ -2,9 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Switch } from "./ui/switch";
 import {
     Dialog,
     DialogContent,
@@ -14,6 +11,18 @@ import {
 } from "./ui/dialog";
 import { AddIngredienteForm } from "./AddIngredienteForm";
 import { createClient } from "@/utils/supabase/client";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "./ui/alert-dialog";
+import { deleteIngrediente } from "../(main)/cocina/actions";
+import { useFormState } from "react-dom";
 
 type Ingrediente = {
     id: number;
@@ -24,6 +33,10 @@ type Ingrediente = {
 
 export function CocinaInventario() {
     const [ingredientes, setIngredientes] = useState<Ingrediente[]>([]);
+    const [state, deleteFormAction] = useFormState(
+        deleteIngrediente,
+        undefined
+    );
 
     const supabase = createClient();
 
@@ -43,8 +56,9 @@ export function CocinaInventario() {
                 console.log(data);
             }
         };
+
         fetchIngredientes();
-    }, []);
+    }, [state]);
 
     return (
         <div className="space-y-4">
@@ -61,66 +75,6 @@ export function CocinaInventario() {
             </Dialog>
 
             <ul className="space-y-4">
-                {/* {ingredientes.map((ing) => (
-                    <li key={ing.id} className="bg-white p-4 rounded-lg shadow">
-                        {editingId === ing.id ? (
-                            <div className="space-y-2">
-                                <Input
-                                    type="number"
-                                    value={ing.cantidad}
-                                    onChange={(e) =>
-                                        handleSave(
-                                            ing.id,
-                                            parseInt(e.target.value),
-                                            ing.disponible
-                                        )
-                                    }
-                                />
-                                <div className="flex items-center space-x-2">
-                                    <Switch
-                                        id={`disponible-${ing.id}`}
-                                        checked={ing.disponible}
-                                        onCheckedChange={(checked) =>
-                                            handleSave(
-                                                ing.id,
-                                                ing.cantidad,
-                                                checked
-                                            )
-                                        }
-                                    />
-                                    <Label htmlFor={`disponible-${ing.id}`}>
-                                        Disponible
-                                    </Label>
-                                </div>
-                                <Button onClick={() => setEditingId(null)}>
-                                    Guardar
-                                </Button>
-                            </div>
-                        ) : (
-                            <div className="flex justify-between items-center">
-                                <div>
-                                    <h3 className="font-bold">{ing.nombre}</h3>
-                                    <p>Cantidad: {ing.cantidad}</p>
-                                    <p>
-                                        Disponible:{" "}
-                                        {ing.disponible ? "Sí" : "No"}
-                                    </p>
-                                </div>
-                                <div className="space-x-2">
-                                    <Button onClick={() => handleEdit(ing.id)}>
-                                        Editar
-                                    </Button>
-                                    <Button
-                                        onClick={() => handleDelete(ing.id)}
-                                        variant="destructive"
-                                    >
-                                        Borrar
-                                    </Button>
-                                </div>
-                            </div>
-                        )}
-                    </li>
-                ))} */}
                 {ingredientes.map((ing) => (
                     <li key={ing.id} className="bg-white p-4 rounded-lg shadow">
                         <div className="flex justify-between items-center">
@@ -131,10 +85,7 @@ export function CocinaInventario() {
                                     Disponible: {ing.disponible ? "Sí" : "No"}
                                 </p>
                             </div>
-                            <div className="space-x-2">
-                                {/* <Button onClick={() => handleEdit(ing.id)}>
-                                    Editar
-                                </Button> */}
+                            <div className="space-x-4">
                                 <Dialog>
                                     <DialogTrigger asChild>
                                         <Button>Editar</Button>
@@ -151,7 +102,35 @@ export function CocinaInventario() {
                                         />
                                     </DialogContent>
                                 </Dialog>
-                                <Button variant="destructive">Borrar</Button>
+                                <AlertDialog>
+                                    <AlertDialogTrigger>
+                                        <Button variant="destructive">
+                                            Borrar
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>
+                                                Estas seguro?
+                                            </AlertDialogTitle>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>
+                                                Cancelar
+                                            </AlertDialogCancel>
+                                            <form action={deleteFormAction}>
+                                                <input
+                                                    type="hidden"
+                                                    name="id"
+                                                    value={ing.id}
+                                                />
+                                                <AlertDialogAction type="submit">
+                                                    Borrar
+                                                </AlertDialogAction>
+                                            </form>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                             </div>
                         </div>
                     </li>

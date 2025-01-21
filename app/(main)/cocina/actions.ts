@@ -22,7 +22,7 @@ export async function addIngrediente(formData: FormData) {
         redirect("/error");
     }
 
-    revalidatePath("/cocina", "layout");
+    revalidatePath("/cocina", "page");
     redirect("/cocina");
 }
 
@@ -48,6 +48,32 @@ export async function updateIngrediente(formData: FormData) {
         redirect("/error");
     }
 
-    revalidatePath("/cocina", "layout");
-    redirect("/cocina");
+    revalidatePath("/", "page");
+    return {
+        success: true,
+    };
+}
+
+export async function deleteIngrediente(prevState: any, formData: FormData) {
+    const supabase = await createClient();
+    // const router = useRouter();
+    const ingrediente = {
+        id: formData.get("id"),
+    };
+    console.log(ingrediente);
+
+    const { error } = await supabase
+        .from("ingredientes")
+        .delete()
+        .eq("id", ingrediente.id);
+
+    if (error) {
+        console.log(error);
+        redirect("/error");
+    }
+
+    revalidatePath("/cocina");
+    return {
+        success: true,
+    };
 }
