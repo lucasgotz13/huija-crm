@@ -7,23 +7,21 @@ import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import { addPropiedad } from "../(main)/encargado/actions";
 
-type Propiedad = {
-    nombre: string;
-    tipo: string;
-    estado: boolean;
-};
-
-type PropiedadFormProps = {
-    onAdd: (propiedad: Propiedad) => void;
-};
-
-export function PropiedadForm() {
+export function PropiedadForm({
+    setOpen,
+}: {
+    setOpen: (open: boolean) => void;
+}) {
     const [nombre, setNombre] = useState<string>("");
     const [tipo, setTipo] = useState<string>("");
     const [estado, setEstado] = useState<boolean>(true);
 
     return (
-        <form action={addPropiedad} className="space-y-4">
+        <form
+            action={addPropiedad}
+            onSubmit={() => setOpen(false)}
+            className="space-y-4"
+        >
             <div className="space-y-2">
                 <Label htmlFor="nombre">Nombre</Label>
                 <Input

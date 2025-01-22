@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "./ui/button";
 import {
     Dialog,
@@ -10,7 +10,6 @@ import {
     DialogTrigger,
 } from "./ui/dialog";
 import { AddIngredienteForm } from "./AddIngredienteForm";
-import { createClient } from "@/utils/supabase/client";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -26,7 +25,6 @@ import {
     deleteIngrediente,
     updateIngrediente,
 } from "../(main)/cocina/actions";
-import { useFormState } from "react-dom";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
@@ -38,43 +36,16 @@ type Ingrediente = {
     disponible: boolean;
 };
 
-export function CocinaInventario() {
-    const [ingredientes, setIngredientes] = useState<Ingrediente[]>([]);
+export function CocinaInventario({
+    ingredientes,
+}: {
+    ingredientes: Ingrediente[];
+}) {
     const [open, setOpen] = useState<boolean>(false);
-    const [addState, addFormAction] = useFormState(addIngrediente, undefined);
-    const [deleteState, deleteFormAction] = useFormState(
-        deleteIngrediente,
-        undefined
-    );
-    const [updateState, updateFormAction] = useFormState(
-        updateIngrediente,
-        undefined
-    );
     const [id, setId] = useState<string | number>("");
     const [nombre, setNombre] = useState<string>("");
     const [cantidad, setCantidad] = useState<number>(0);
     const [disponible, setDisponible] = useState<boolean>(true);
-
-    const supabase = createClient();
-
-    useEffect(() => {
-        const fetchIngredientes = async () => {
-            const { data, error } = await supabase
-                .from("ingredientes")
-                .select("*");
-
-            if (error) {
-                console.error(error);
-                return;
-            }
-
-            if (data) {
-                setIngredientes(data.sort((a, b) => a.id - b.id));
-            }
-        };
-
-        fetchIngredientes();
-    }, [deleteState, updateState, addState]);
 
     return (
         <div className="space-y-4">
@@ -86,9 +57,8 @@ export function CocinaInventario() {
                     <DialogHeader>
                         <DialogTitle>Agregar Nuevo Ingrediente</DialogTitle>
                     </DialogHeader>
-                    {/* <AddIngredienteForm accion="Agregar" ingrediente={null} /> */}
                     <form
-                        action={addFormAction}
+                        action={addIngrediente}
                         className="space-y-4"
                         onSubmit={() => setOpen(false)}
                     >
@@ -153,16 +123,15 @@ export function CocinaInventario() {
                                             </DialogTitle>
                                         </DialogHeader>
                                         <AddIngredienteForm
-                                            accion={updateFormAction}
+                                            accion={updateIngrediente}
                                             ingrediente={ing}
                                         />
                                     </DialogContent>
                                 </Dialog>
+                                {/* TODO: Quizás hacerlo un componente reutilizable */}
                                 <AlertDialog>
-                                    <AlertDialogTrigger>
-                                        <Button variant="destructive">
-                                            Borrar
-                                        </Button>
+                                    <AlertDialogTrigger className="px-4 py-2 rounded-md bg-red-500 hover:bg-red-500/90 text-white">
+                                        Borrar
                                     </AlertDialogTrigger>
                                     <AlertDialogContent>
                                         <AlertDialogHeader>
@@ -174,7 +143,7 @@ export function CocinaInventario() {
                                             <AlertDialogCancel>
                                                 Cancelar
                                             </AlertDialogCancel>
-                                            <form action={deleteFormAction}>
+                                            <form action={deleteIngrediente}>
                                                 <input
                                                     type="hidden"
                                                     name="id"

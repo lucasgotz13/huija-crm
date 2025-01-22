@@ -13,6 +13,8 @@ import {
 import { Button } from "./ui/button";
 import { PropiedadForm } from "./AddPropiedadForm";
 import { createClient } from "@/utils/supabase/client";
+import { updatePropiedad } from "../(main)/encargado/actions";
+import { useFormStatus } from "react-dom";
 
 type Propiedades = {
     nombre: string;
@@ -20,45 +22,25 @@ type Propiedades = {
     estado: boolean;
 };
 
-export function EncargadoDashboard() {
-    const supabase = createClient();
-    const [items, setItems] = useState<Propiedades[]>([]);
+function SubmitSwitch({ item }: { item: Propiedades }) {
+    const { pending } = useFormStatus();
+    return (
+        <Switch
+            id={item.nombre}
+            name="estado"
+            checked={item.estado}
+            type="submit"
+            disabled={pending}
+        />
+    );
+}
 
-    const toggleEstado = async (nombre: string) => {
-        const { data, error } = await supabase
-            .from("propiedades")
-            .update({
-                estado: !items.find((item) => item.nombre === nombre)?.estado,
-            })
-            .eq("nombre", nombre);
-        if (error) {
-            console.log(error);
-            return;
-        }
-        setItems(
-            items.map((item) =>
-                item.nombre === nombre
-                    ? { ...item, estado: !item.estado }
-                    : item
-            )
-        );
-    };
-    useEffect(() => {
-        const fetchItems = async () => {
-            const { data, error } = await supabase.from("propiedades").select();
-            if (error) {
-                console.log(error);
-            }
-            console.log(data);
-            const sortedData = data?.sort((a, b) => a.id - b.id) ?? [];
-            setItems(sortedData);
-        };
-        fetchItems();
-    }, []);
+export function EncargadoDashboard({ items }: { items: Propiedades[] }) {
+    const [open, setOpen] = useState<boolean>(false);
 
     return (
         <div className="space-y-4">
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                     <Button>Agregar propiedad</Button>
                 </DialogTrigger>
@@ -66,7 +48,7 @@ export function EncargadoDashboard() {
                     <DialogHeader>
                         <DialogTitle>Agregar propiedad</DialogTitle>
                     </DialogHeader>
-                    <PropiedadForm />
+                    <PropiedadForm setOpen={setOpen} />
                 </DialogContent>
             </Dialog>
             {items.map((item) => (
@@ -77,11 +59,21 @@ export function EncargadoDashboard() {
                     <Label htmlFor={item.nombre} className="text-lg">
                         {item.nombre}
                     </Label>
-                    <Switch
-                        id={item.nombre}
-                        checked={item.estado}
-                        onCheckedChange={() => toggleEstado(item.nombre)}
-                    />
+                    <form action={updatePropiedad}>
+                        <input
+                            type="hidden"
+                            name="nombre"
+                            value={item.nombre}
+                        />
+                        <input type="hidden" name="tipo" value={item.tipo} />
+                        {/* <Switch
+                            id={item.nombre}
+                            name="estado"
+                            checked={item.estado}
+                            type="submit"
+                        /> */}
+                        <SubmitSwitch item={item} />
+                    </form>
                 </div>
             ))}
         </div>
