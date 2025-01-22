@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function addIngrediente(formData: FormData) {
+export async function addIngrediente(prevState: any, formData: FormData) {
     const supabase = await createClient();
 
     const ingrediente = {
@@ -23,10 +23,12 @@ export async function addIngrediente(formData: FormData) {
     }
 
     revalidatePath("/cocina", "page");
-    redirect("/cocina");
+    return {
+        success: true,
+    };
 }
 
-export async function updateIngrediente(formData: FormData) {
+export async function updateIngrediente(prevState: any, formData: FormData) {
     const supabase = await createClient();
 
     const ingrediente = {
@@ -56,7 +58,6 @@ export async function updateIngrediente(formData: FormData) {
 
 export async function deleteIngrediente(prevState: any, formData: FormData) {
     const supabase = await createClient();
-    // const router = useRouter();
     const ingrediente = {
         id: formData.get("id"),
     };

@@ -6,6 +6,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import { addIngrediente, updateIngrediente } from "../(main)/cocina/actions";
+import { useFormStatus } from "react-dom";
 
 type Ingrediente = {
     id?: string | number;
@@ -14,31 +15,33 @@ type Ingrediente = {
     disponible: boolean;
 };
 
+function SubmitButton() {
+    const { pending } = useFormStatus();
+    return (
+        <Button className="w-full" type="submit" disabled={pending}>
+            {pending ? "Cargando..." : "Editar ingrediente"}
+        </Button>
+    );
+}
+
 export function AddIngredienteForm({
     accion,
     ingrediente = null,
 }: {
-    accion: "Agregar" | "Editar";
+    accion: any;
     ingrediente: Ingrediente | null;
 }) {
-    const [id, setId] = useState<string | number>(
-        accion === "Editar" ? ingrediente?.id ?? "" : ""
-    );
-    const [nombre, setNombre] = useState<string>(
-        accion === "Editar" ? ingrediente?.nombre ?? "" : ""
-    );
+    const [id, setId] = useState<string | number>(ingrediente?.id ?? "");
+    const [nombre, setNombre] = useState<string>(ingrediente?.nombre ?? "");
     const [cantidad, setCantidad] = useState<number>(
-        accion === "Editar" ? ingrediente?.cantidad ?? 0 : 0
+        ingrediente?.cantidad ?? 0
     );
     const [disponible, setDisponible] = useState<boolean>(
-        accion === "Editar" ? ingrediente?.disponible ?? true : true
+        ingrediente?.disponible ?? true
     );
 
     return (
-        <form
-            action={accion === "Agregar" ? addIngrediente : updateIngrediente}
-            className="space-y-4"
-        >
+        <form action={accion} className="space-y-4">
             <input type="hidden" id="id" name="id" value={id} />
             <div className="space-y-2">
                 <Label htmlFor="nombre">Nombre</Label>
@@ -70,7 +73,10 @@ export function AddIngredienteForm({
                 />
                 <Label htmlFor="disponible">Disponible</Label>
             </div>
-            <Button type="submit">{accion} ingrediente</Button>
+            {/* <Button type="submit" disabled={pending}>
+                {accion} ingrediente
+            </Button> */}
+            <SubmitButton />
         </form>
     );
 }
