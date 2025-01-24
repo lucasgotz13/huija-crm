@@ -70,16 +70,7 @@ export function EncargadoDashboard({ items }: { items: Propiedad[] }) {
                     <Label htmlFor={item.nombre} className="text-lg">
                         {item.nombre}
                     </Label>
-                    <form
-                        action={updatePropiedad}
-                        className="flex items-center gap-2"
-                    >
-                        <input
-                            type="hidden"
-                            name="nombre"
-                            value={item.nombre}
-                        />
-                        <input type="hidden" name="tipo" value={item.tipo} />
+                    <div className="flex items-center gap-2">
                         <AlertDialog>
                             <AlertDialogTrigger className="px-4 py-2 rounded-md bg-red-500 hover:bg-red-500/90 text-white">
                                 Borrar
@@ -107,8 +98,19 @@ export function EncargadoDashboard({ items }: { items: Propiedad[] }) {
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
-                        <SubmitSwitch item={item} />
-                    </form>
+                        <form
+                            action={updatePropiedad}
+                            className="flex items-center gap-2"
+                        >
+                            <input type="hidden" name="id" value={item.id} />
+                            <input
+                                type="hidden"
+                                name="tipo"
+                                value={item.tipo}
+                            />
+                            <SubmitSwitch item={item} />
+                        </form>
+                    </div>
                 </div>
             ))}
         </div>
