@@ -28,6 +28,7 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
+import { cn } from "@/lib/utils";
 
 type Ingrediente = {
     id: number;
@@ -102,7 +103,13 @@ export function CocinaInventario({
 
             <ul className="space-y-4">
                 {ingredientes.map((ing) => (
-                    <li key={ing.id} className="bg-white p-4 rounded-lg shadow">
+                    <li
+                        key={ing.id}
+                        className={cn(
+                            "bg-white border-2 p-4 rounded-lg shadow",
+                            !ing.disponible && "border-red-500"
+                        )}
+                    >
                         <div className="flex justify-between items-center">
                             <div>
                                 <h3 className="font-bold">{ing.nombre}</h3>
