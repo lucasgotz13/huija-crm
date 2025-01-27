@@ -8,7 +8,7 @@ export async function addPropiedad(formData: FormData) {
     const supabase = await createClient();
 
     const propiedad = {
-        id: formData.get("id"),
+        nombre: formData.get("nombre"),
         tipo: formData.get("tipo"),
         estado: formData.get("estado") ? true : false,
     };

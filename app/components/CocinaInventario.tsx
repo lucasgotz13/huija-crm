@@ -29,6 +29,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import { cn } from "@/lib/utils";
+import DeleteButton from "./DeleteButton";
 
 type Ingrediente = {
     id: number;
@@ -135,34 +136,10 @@ export function CocinaInventario({
                                         />
                                     </DialogContent>
                                 </Dialog>
-                                {/* TODO: Quizás hacerlo un componente reutilizable */}
-                                <AlertDialog>
-                                    <AlertDialogTrigger className="px-4 py-2 rounded-md bg-red-500 hover:bg-red-500/90 text-white">
-                                        Borrar
-                                    </AlertDialogTrigger>
-                                    <AlertDialogContent>
-                                        <AlertDialogHeader>
-                                            <AlertDialogTitle>
-                                                Estas seguro?
-                                            </AlertDialogTitle>
-                                        </AlertDialogHeader>
-                                        <AlertDialogFooter>
-                                            <AlertDialogCancel>
-                                                Cancelar
-                                            </AlertDialogCancel>
-                                            <form action={deleteIngrediente}>
-                                                <input
-                                                    type="hidden"
-                                                    name="id"
-                                                    value={ing.id}
-                                                />
-                                                <AlertDialogAction type="submit">
-                                                    Borrar
-                                                </AlertDialogAction>
-                                            </form>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog>
+                                <DeleteButton
+                                    id={ing.id}
+                                    action={deleteIngrediente}
+                                />
                             </div>
                         </div>
                     </li>

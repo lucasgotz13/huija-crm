@@ -55,7 +55,7 @@ export function Sidebar() {
                     onClick={logout}
                 >
                     <MoveLeft className="h-6 w-6 md:mr-2" />
-                    <span className="hidden md:inline">Log out</span>
+                    <span className="hidden md:inline">Salir</span>
                 </Button>
             </div>
         </div>

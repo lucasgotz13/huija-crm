@@ -25,6 +25,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "./ui/alert-dialog";
+import DeleteButton from "./DeleteButton";
 
 type Propiedad = {
     id: number;
@@ -71,33 +72,7 @@ export function EncargadoDashboard({ items }: { items: Propiedad[] }) {
                         {item.nombre}
                     </Label>
                     <div className="flex items-center gap-2">
-                        <AlertDialog>
-                            <AlertDialogTrigger className="px-4 py-2 rounded-md bg-red-500 hover:bg-red-500/90 text-white">
-                                Borrar
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>
-                                        Estas seguro?
-                                    </AlertDialogTitle>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel>
-                                        Cancelar
-                                    </AlertDialogCancel>
-                                    <form action={borrarPropiedad}>
-                                        <input
-                                            type="hidden"
-                                            name="id"
-                                            value={item.id}
-                                        />
-                                        <AlertDialogAction type="submit">
-                                            Borrar
-                                        </AlertDialogAction>
-                                    </form>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
+                        <DeleteButton id={item.id} action={borrarPropiedad} />
                         <form
                             action={updatePropiedad}
                             className="flex items-center gap-2"
