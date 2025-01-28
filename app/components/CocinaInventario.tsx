@@ -11,16 +11,6 @@ import {
 } from "./ui/dialog";
 import { AddIngredienteForm } from "./AddIngredienteForm";
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "./ui/alert-dialog";
-import {
     addIngrediente,
     deleteIngrediente,
     updateIngrediente,

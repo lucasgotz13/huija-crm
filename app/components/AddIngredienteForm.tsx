@@ -5,8 +5,8 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
-import { addIngrediente, updateIngrediente } from "../(main)/cocina/actions";
 import { useFormStatus } from "react-dom";
+import { updateIngrediente } from "../(main)/cocina/actions";
 
 type Ingrediente = {
     id?: string | number;
@@ -73,9 +73,6 @@ export function AddIngredienteForm({
                 />
                 <Label htmlFor="disponible">Disponible</Label>
             </div>
-            {/* <Button type="submit" disabled={pending}>
-                {accion} ingrediente
-            </Button> */}
             <SubmitButton />
         </form>
     );
