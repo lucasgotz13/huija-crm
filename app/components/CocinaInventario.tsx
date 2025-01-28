@@ -9,17 +9,11 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "./ui/dialog";
-import { AddIngredienteForm } from "./AddIngredienteForm";
-import {
-    addIngrediente,
-    deleteIngrediente,
-    updateIngrediente,
-} from "../(main)/cocina/actions";
+import { addIngrediente } from "../(main)/cocina/actions";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
-import { cn } from "@/lib/utils";
-import DeleteButton from "./DeleteButton";
+import CocinaItem from "./CocinaItem";
 
 type Ingrediente = {
     id: number;
@@ -94,45 +88,7 @@ export function CocinaInventario({
 
             <ul className="space-y-4">
                 {ingredientes.map((ing) => (
-                    <li
-                        key={ing.id}
-                        className={cn(
-                            "bg-white border-2 p-4 rounded-lg shadow",
-                            !ing.disponible && "border-red-500"
-                        )}
-                    >
-                        <div className="flex justify-between items-center">
-                            <div>
-                                <h3 className="font-bold">{ing.nombre}</h3>
-                                <p>Cantidad: {ing.cantidad}</p>
-                                <p>
-                                    Disponible: {ing.disponible ? "Sí" : "No"}
-                                </p>
-                            </div>
-                            <div className="space-x-4">
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button>Editar</Button>
-                                    </DialogTrigger>
-                                    <DialogContent>
-                                        <DialogHeader>
-                                            <DialogTitle>
-                                                Editar ingrediente
-                                            </DialogTitle>
-                                        </DialogHeader>
-                                        <AddIngredienteForm
-                                            accion={updateIngrediente}
-                                            ingrediente={ing}
-                                        />
-                                    </DialogContent>
-                                </Dialog>
-                                <DeleteButton
-                                    id={ing.id}
-                                    action={deleteIngrediente}
-                                />
-                            </div>
-                        </div>
-                    </li>
+                    <CocinaItem key={ing.id} ingrediente={ing} />
                 ))}
             </ul>
         </div>
