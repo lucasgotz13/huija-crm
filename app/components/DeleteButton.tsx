@@ -27,7 +27,7 @@ export default function DeleteButton({
                 <AlertDialogHeader>
                     <AlertDialogTitle>Estas seguro?</AlertDialogTitle>
                 </AlertDialogHeader>
-                <AlertDialogFooter>
+                <AlertDialogFooter className="flex flex-col items-center justify-center gap-2">
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
                     <form action={action}>
                         <input type="hidden" name="id" value={id} />

@@ -32,7 +32,7 @@ export default function CocinaItem({
                 !ingrediente.disponible && "border-red-500"
             )}
         >
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-center">
                 <div>
                     <h3 className="font-bold">{ingrediente.nombre}</h3>
                     <p>Cantidad: {ingrediente.cantidad}</p>
