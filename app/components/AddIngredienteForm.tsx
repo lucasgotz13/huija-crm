@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import { useFormStatus } from "react-dom";
-import { updateIngrediente } from "../(main)/cocina/actions";
+import { addIngrediente, updateIngrediente } from "../(main)/cocina/actions";
 
 type Ingrediente = {
     id?: string | number;

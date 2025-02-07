@@ -5,20 +5,30 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
-import { addPropiedad } from "../(main)/encargado/actions";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 export function PropiedadForm({
     setOpen,
+    formAction,
 }: {
     setOpen: (open: boolean) => void;
+    formAction: any;
 }) {
     const [nombre, setNombre] = useState<string>("");
-    const [tipo, setTipo] = useState<string>("");
     const [estado, setEstado] = useState<boolean>(true);
+    const [tipo, setTipo] = useState<string>("");
 
     return (
         <form
-            action={addPropiedad}
+            action={formAction}
             onSubmit={() => setOpen(false)}
             className="space-y-4"
         >
@@ -33,15 +43,18 @@ export function PropiedadForm({
                 />
             </div>
             <div className="space-y-2">
-                <Label htmlFor="tipo">Tipo</Label>
-                <Input
-                    id="tipo"
-                    name="tipo"
-                    type="text"
-                    value={tipo}
-                    onChange={(e) => setTipo(e.target.value)}
-                    required
-                />
+                <Select name="tipo" value={tipo} onValueChange={setTipo}>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Selecciona un tipo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectLabel>Tipo</SelectLabel>
+                            <SelectItem value="switch">Switch</SelectItem>
+                            <SelectItem value="select">Select</SelectItem>
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
             </div>
             <div className="flex items-center space-x-2">
                 <Switch

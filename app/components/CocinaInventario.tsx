@@ -14,12 +14,22 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import CocinaItem from "./CocinaItem";
+import { useFormState } from "react-dom";
 
 type Ingrediente = {
     id: number;
     nombre: string;
     cantidad: number;
     disponible: boolean;
+};
+
+const initialState = {
+    success: "",
+    errors: {
+        nombre: "",
+        cantidad: "",
+        disponible: "",
+    },
 };
 
 export function CocinaInventario({
@@ -33,6 +43,8 @@ export function CocinaInventario({
     const [cantidad, setCantidad] = useState<number>(0);
     const [disponible, setDisponible] = useState<boolean>(true);
 
+    const [state, formAction] = useFormState(addIngrediente, initialState);
+
     return (
         <div className="space-y-4">
             <Dialog open={open} onOpenChange={setOpen}>
@@ -44,7 +56,7 @@ export function CocinaInventario({
                         <DialogTitle>Agregar Nuevo Ingrediente</DialogTitle>
                     </DialogHeader>
                     <form
-                        action={addIngrediente}
+                        action={formAction}
                         className="space-y-4"
                         onSubmit={() => setOpen(false)}
                     >
@@ -85,6 +97,9 @@ export function CocinaInventario({
                     </form>
                 </DialogContent>
             </Dialog>
+            {state?.errors.nombre && (
+                <p className="text-red-500">ERROR: {state?.errors.nombre}</p>
+            )}
 
             <ul className="space-y-4">
                 {ingredientes.map((ing) => (

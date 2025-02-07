@@ -4,7 +4,20 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function addPropiedad(formData: FormData) {
+import { z } from "zod";
+
+const propiedadSchema = z.object({
+    nombre: z
+        .string()
+        .trim()
+        .min(2, { message: "El campo 'nombre' requiere de dos o mas letras" }),
+    tipo: z.enum(["switch", "select"], {
+        errorMap: () => ({ message: "El tipo debe ser 'switch' o 'select'" }),
+    }),
+    estado: z.boolean().optional(),
+});
+
+export async function addPropiedad(prevState: any, formData: FormData) {
     const supabase = await createClient();
 
     const propiedad = {
@@ -13,13 +26,32 @@ export async function addPropiedad(formData: FormData) {
         estado: formData.get("estado") ? true : false,
     };
 
+    const propiedadValidada = propiedadSchema.safeParse(propiedad);
+    if (!propiedadValidada.success) {
+        const formFieldErrors = propiedadValidada.error.flatten().fieldErrors;
+        console.log(formFieldErrors);
+        return {
+            errors: {
+                nombre: formFieldErrors?.nombre,
+                tipo: formFieldErrors?.tipo,
+                estado: formFieldErrors?.estado,
+            },
+        };
+    }
+
     console.log(propiedad);
 
     const { error } = await supabase.from("propiedades").insert([propiedad]);
 
     if (error) {
         console.log(error);
-        redirect("/error");
+        return {
+            errors: {
+                nombre: "Error al agregar propiedad",
+                tipo: "Error al agregar propiedad",
+                estado: "Error al agregar propiedad",
+            },
+        };
     }
 
     revalidatePath("/", "layout");
