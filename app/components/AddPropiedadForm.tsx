@@ -51,7 +51,7 @@ export function PropiedadForm({
                         <SelectGroup>
                             <SelectLabel>Tipo</SelectLabel>
                             <SelectItem value="switch">Switch</SelectItem>
-                            <SelectItem value="select">Select</SelectItem>
+                            <SelectItem value="grupo">Grupo</SelectItem>
                         </SelectGroup>
                     </SelectContent>
                 </Select>

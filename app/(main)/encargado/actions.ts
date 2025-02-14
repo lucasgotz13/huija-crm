@@ -11,10 +11,10 @@ const propiedadSchema = z.object({
         .string()
         .trim()
         .min(2, { message: "El campo 'nombre' requiere de dos o mas letras" }),
-    tipo: z.enum(["switch", "select"], {
-        errorMap: () => ({ message: "El tipo debe ser 'switch' o 'select'" }),
+    tipo: z.enum(["switch", "grupo"], {
+        errorMap: () => ({ message: "El tipo debe ser 'switch' o 'grupo'" }),
     }),
-    estado: z.boolean().optional(),
+    estado: z.boolean().nullable().optional(),
 });
 
 export async function addPropiedad(prevState: any, formData: FormData) {
@@ -23,7 +23,12 @@ export async function addPropiedad(prevState: any, formData: FormData) {
     const propiedad = {
         nombre: formData.get("nombre"),
         tipo: formData.get("tipo"),
-        estado: formData.get("estado") ? true : false,
+        estado:
+            formData.get("tipo") === "grupo"
+                ? null
+                : formData.get("estado")
+                ? true
+                : false,
     };
 
     const propiedadValidada = propiedadSchema.safeParse(propiedad);
@@ -41,17 +46,38 @@ export async function addPropiedad(prevState: any, formData: FormData) {
 
     console.log(propiedad);
 
-    const { error } = await supabase.from("propiedades").insert([propiedad]);
-
-    if (error) {
-        console.log(error);
-        return {
-            errors: {
-                nombre: "Error al agregar propiedad",
-                tipo: "Error al agregar propiedad",
-                estado: "Error al agregar propiedad",
-            },
+    if (propiedad.tipo === "grupo") {
+        const grupo = {
+            nombre: propiedad.nombre,
         };
+        const { error } = await supabase
+            .from("grupo_propiedades")
+            .insert([grupo]);
+        if (error) {
+            console.log(error);
+            return {
+                errors: {
+                    nombre: "Error al agregar propiedad",
+                    tipo: "Error al agregar propiedad",
+                    estado: "Error al agregar propiedad",
+                },
+            };
+        }
+    } else {
+        const { error } = await supabase
+            .from("propiedades")
+            .insert([propiedad]);
+
+        if (error) {
+            console.log(error);
+            return {
+                errors: {
+                    nombre: "Error al agregar propiedad",
+                    tipo: "Error al agregar propiedad",
+                    estado: "Error al agregar propiedad",
+                },
+            };
+        }
     }
 
     revalidatePath("/", "layout");

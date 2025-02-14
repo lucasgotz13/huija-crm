@@ -14,12 +14,18 @@ import { PropiedadForm } from "./AddPropiedadForm";
 import { useFormState, useFormStatus } from "react-dom";
 import EncargadoItem from "./EncargadoItem";
 import { addPropiedad } from "../(main)/encargado/actions";
+import EncargadoGroupItem from "./EncargadoGroupItem";
 
 type Propiedad = {
     id: number;
     nombre: string;
     tipo: string;
     estado: boolean;
+};
+
+type PropiedadGrupo = {
+    id: number;
+    nombre: string;
 };
 
 const initialState = {
@@ -44,10 +50,17 @@ function SubmitSwitch({ item }: { item: Propiedad }) {
     );
 }
 
-export function EncargadoDashboard({ items }: { items: Propiedad[] }) {
+export function EncargadoDashboard({
+    items,
+    groupItems,
+}: {
+    items: Propiedad[];
+    groupItems: PropiedadGrupo[];
+}) {
     const [open, setOpen] = useState<boolean>(false);
 
     const [state, formAction] = useFormState(addPropiedad, initialState);
+    console.log(groupItems);
 
     return (
         <div className="space-y-4">
@@ -71,6 +84,9 @@ export function EncargadoDashboard({ items }: { items: Propiedad[] }) {
                     item={item}
                     SubmitSwitch={SubmitSwitch}
                 />
+            ))}
+            {groupItems.map((groupItem) => (
+                <EncargadoGroupItem key={groupItem.id} item={groupItem} />
             ))}
         </div>
     );

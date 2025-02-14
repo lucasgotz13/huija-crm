@@ -1,25 +1,15 @@
-"use client";
-
 import Link from "next/link";
 import { borrarPropiedad, updatePropiedad } from "../(main)/encargado/actions";
 import DeleteButton from "./DeleteButton";
-import { Button } from "./ui/button";
 import { Label } from "./ui/label";
+import { Button } from "./ui/button";
 
-type Propiedad = {
+type PropiedadGrupo = {
     id: number;
     nombre: string;
-    tipo: string;
-    estado: boolean;
 };
 
-export default function EncargadoItem({
-    item,
-    SubmitSwitch,
-}: {
-    item: Propiedad;
-    SubmitSwitch: any;
-}) {
+export default function EncargadoGroupItem({ item }: { item: PropiedadGrupo }) {
     return (
         <div className="bg-white border-2 p-4 rounded-lg shadow flex items-center justify-between">
             <Label htmlFor={item.nombre} className="text-lg">
@@ -27,14 +17,9 @@ export default function EncargadoItem({
             </Label>
             <div className="flex items-center gap-2">
                 <DeleteButton id={item.id} action={borrarPropiedad} />
-                <form
-                    action={updatePropiedad}
-                    className="flex items-center gap-2"
-                >
-                    <input type="hidden" name="id" value={item.id} />
-                    <input type="hidden" name="tipo" value={item.tipo} />
-                    <SubmitSwitch item={item} />
-                </form>
+                <Link href={`/encargado/${item.nombre}`}>
+                    <Button>Ver mas</Button>
+                </Link>
             </div>
         </div>
     );
