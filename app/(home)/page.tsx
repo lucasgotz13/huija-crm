@@ -6,8 +6,9 @@ import {
     CardTitle,
 } from "../components/ui/card";
 import { ChefHat, Clipboard } from "lucide-react";
+import { WeatherWidget } from "../components/WeatherWidget";
 
-export default function HomePage() {
+export default async function HomePage() {
     return (
         <div className="space-y-4">
             <h1 className="text-2xl font-bold">
@@ -41,6 +42,7 @@ export default function HomePage() {
                     </Card>
                 </Link>
             </div>
+            <WeatherWidget />
         </div>
     );
 }
