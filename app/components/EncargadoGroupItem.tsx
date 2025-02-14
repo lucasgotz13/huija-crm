@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { borrarPropiedad, updatePropiedad } from "../(main)/encargado/actions";
+import {
+    borrarGrupoPropiedades,
+    updatePropiedad,
+} from "../(main)/encargado/actions";
 import DeleteButton from "./DeleteButton";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
@@ -16,7 +19,7 @@ export default function EncargadoGroupItem({ item }: { item: PropiedadGrupo }) {
                 {item.nombre}
             </Label>
             <div className="flex items-center gap-2">
-                <DeleteButton id={item.id} action={borrarPropiedad} />
+                <DeleteButton id={item.id} action={borrarGrupoPropiedades} />
                 <Link href={`/encargado/${item.nombre}`}>
                     <Button>Ver mas</Button>
                 </Link>

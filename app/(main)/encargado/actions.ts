@@ -20,16 +20,16 @@ const propiedadSchema = z.object({
 export async function addPropiedad(prevState: any, formData: FormData) {
     const supabase = await createClient();
 
+    const tipo = formData.get("tipo") || "switch"; // Valor por defecto
+
     const propiedad = {
         nombre: formData.get("nombre"),
-        tipo: formData.get("tipo"),
-        estado:
-            formData.get("tipo") === "grupo"
-                ? null
-                : formData.get("estado")
-                ? true
-                : false,
+        tipo: tipo,
+        estado: tipo === "grupo" ? null : formData.get("estado") === "on",
+        group_id: formData.get("group_id") ?? null,
     };
+
+    console.log(propiedad);
 
     const propiedadValidada = propiedadSchema.safeParse(propiedad);
     if (!propiedadValidada.success) {
@@ -43,8 +43,6 @@ export async function addPropiedad(prevState: any, formData: FormData) {
             },
         };
     }
-
-    console.log(propiedad);
 
     if (propiedad.tipo === "grupo") {
         const grupo = {
@@ -118,6 +116,28 @@ export async function borrarPropiedad(formData: FormData) {
 
     const { error } = await supabase
         .from("propiedades")
+        .delete()
+        .eq("id", propiedad.id);
+
+    if (error) {
+        console.log(error);
+        redirect("/error");
+    }
+
+    revalidatePath("/", "layout");
+}
+
+export async function borrarGrupoPropiedades(formData: FormData) {
+    const supabase = await createClient();
+
+    const propiedad = {
+        id: formData.get("id"),
+    };
+
+    console.log(propiedad);
+
+    const { error } = await supabase
+        .from("grupo_propiedades")
         .delete()
         .eq("id", propiedad.id);
 

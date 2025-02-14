@@ -11,6 +11,7 @@ type Propiedad = {
     nombre: string;
     tipo: string;
     estado: boolean;
+    group_id: number | null;
 };
 
 export default function EncargadoItem({

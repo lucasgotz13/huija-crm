@@ -1,7 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useFormState, useFormStatus } from "react-dom";
 import { Switch } from "./ui/switch";
+import EncargadoItem from "./EncargadoItem";
+import { PropiedadForm } from "./AddPropiedadForm";
+import { addPropiedad } from "../(main)/encargado/actions";
+import { useState } from "react";
 import {
     Dialog,
     DialogContent,
@@ -10,23 +14,13 @@ import {
     DialogTrigger,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
-import { PropiedadForm } from "./AddPropiedadForm";
-import { useFormState, useFormStatus } from "react-dom";
-import EncargadoItem from "./EncargadoItem";
-import { addPropiedad } from "../(main)/encargado/actions";
-import EncargadoGroupItem from "./EncargadoGroupItem";
 
 type Propiedad = {
     id: number;
-    nombre: string;
     tipo: string;
     estado: boolean;
-    group_id: null | number;
-};
-
-type PropiedadGrupo = {
-    id: number;
     nombre: string;
+    group_id: number;
 };
 
 const initialState = {
@@ -51,20 +45,17 @@ function SubmitSwitch({ item }: { item: Propiedad }) {
     );
 }
 
-export function EncargadoDashboard({
-    items,
-    groupItems,
+export default function EncargadoGroupPage({
+    propiedades,
+    group_id,
 }: {
-    items: Propiedad[];
-    groupItems: PropiedadGrupo[];
+    propiedades: Propiedad[];
+    group_id: number;
 }) {
     const [open, setOpen] = useState<boolean>(false);
-
     const [state, formAction] = useFormState(addPropiedad, initialState);
-    console.log(groupItems);
-
     return (
-        <div className="space-y-4">
+        <div className="space-y-2">
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                     <Button>Agregar propiedad</Button>
@@ -74,28 +65,19 @@ export function EncargadoDashboard({
                         <DialogTitle>Agregar propiedad</DialogTitle>
                     </DialogHeader>
                     <PropiedadForm
-                        setOpen={setOpen}
                         formAction={formAction}
-                        isGrouped={false}
+                        isGrouped={true}
+                        setOpen={setOpen}
+                        group_id={group_id}
                     />
                 </DialogContent>
             </Dialog>
-            {state?.errors.nombre && (
-                <p className="text-red-500">{state.errors.nombre}</p>
-            )}
-            {items.map((item) => {
-                if (item.group_id === null) {
-                    return (
-                        <EncargadoItem
-                            key={item.id}
-                            item={item}
-                            SubmitSwitch={SubmitSwitch}
-                        />
-                    );
-                }
-            })}
-            {groupItems.map((groupItem) => (
-                <EncargadoGroupItem key={groupItem.id} item={groupItem} />
+            {propiedades.map((propiedad) => (
+                <EncargadoItem
+                    key={propiedad.id}
+                    item={propiedad}
+                    SubmitSwitch={SubmitSwitch}
+                />
             ))}
         </div>
     );
