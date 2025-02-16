@@ -61,7 +61,12 @@ export async function updateIngrediente(formData: FormData) {
         id: formData.get("id"),
         nombre: formData.get("nombre"),
         cantidad: formData.get("cantidad"),
-        disponible: formData.get("disponible") ? true : false,
+        disponible:
+            formData.get("cantidad") === "0"
+                ? false
+                : formData.get("disponible")
+                ? true
+                : false,
     };
 
     console.log("editando", ingrediente);

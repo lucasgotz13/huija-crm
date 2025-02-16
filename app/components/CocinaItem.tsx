@@ -29,7 +29,8 @@ export default function CocinaItem({
         <li
             className={cn(
                 "bg-white border-2 p-4 rounded-lg shadow",
-                !ingrediente.disponible && "border-red-500"
+                !ingrediente.disponible && "border-red-500",
+                ingrediente.cantidad == 0 && "border-red-500"
             )}
         >
             <div className="flex flex-col sm:flex-row justify-between items-center">
