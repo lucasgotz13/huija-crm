@@ -78,6 +78,7 @@ export default function EncargadoGroupPage({
                     key={propiedad.id}
                     item={propiedad}
                     SubmitSwitch={SubmitSwitch}
+                    isGrouped={true}
                 />
             ))}
         </div>
