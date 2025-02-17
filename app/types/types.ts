@@ -24,4 +24,5 @@ export type Propiedad = {
 export type PropiedadGrupo = {
     id: number;
     nombre: string;
+    tipo?: string;
 };
