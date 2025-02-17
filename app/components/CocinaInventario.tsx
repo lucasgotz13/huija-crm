@@ -15,13 +15,14 @@ import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import CocinaItem from "./CocinaItem";
 import { useFormState } from "react-dom";
+import type { Ingrediente } from "../types/types";
 
-type Ingrediente = {
-    id: number;
-    nombre: string;
-    cantidad: number;
-    disponible: boolean;
-};
+// type Ingrediente = {
+//     id: number;
+//     nombre: string;
+//     cantidad: number;
+//     disponible: boolean;
+// };
 
 const initialState = {
     success: "",

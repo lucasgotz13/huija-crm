@@ -6,14 +6,14 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import { useFormStatus } from "react-dom";
-import { addIngrediente, updateIngrediente } from "../(main)/cocina/actions";
+import type { Ingrediente } from "../types/types";
 
-type Ingrediente = {
-    id?: string | number;
-    nombre: string;
-    cantidad: number;
-    disponible: boolean;
-};
+// type Ingrediente = {
+//     id?: string | number;
+//     nombre: string;
+//     cantidad: number;
+//     disponible: boolean;
+// };
 
 function SubmitButton() {
     const { pending } = useFormStatus();

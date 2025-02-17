@@ -1,18 +1,17 @@
 "use client";
 
-import Link from "next/link";
 import { borrarPropiedad, updatePropiedad } from "../(main)/encargado/actions";
 import DeleteButton from "./DeleteButton";
-import { Button } from "./ui/button";
 import { Label } from "./ui/label";
+import type { Propiedad } from "../types/types";
 
-type Propiedad = {
-    id: number;
-    nombre: string;
-    tipo: string;
-    estado: boolean;
-    group_id: number | null;
-};
+// type Propiedad = {
+//     id: number;
+//     nombre: string;
+//     tipo: string;
+//     estado: boolean;
+//     group_id: number | null;
+// };
 
 export default function EncargadoItem({
     item,

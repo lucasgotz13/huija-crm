@@ -15,19 +15,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import EncargadoItem from "./EncargadoItem";
 import { addPropiedad } from "../(main)/encargado/actions";
 import EncargadoGroupItem from "./EncargadoGroupItem";
-
-type Propiedad = {
-    id: number;
-    nombre: string;
-    tipo: string;
-    estado: boolean;
-    group_id: null | number;
-};
-
-type PropiedadGrupo = {
-    id: number;
-    nombre: string;
-};
+import type { Propiedad, PropiedadGrupo } from "../types/types";
 
 const initialState = {
     success: "",

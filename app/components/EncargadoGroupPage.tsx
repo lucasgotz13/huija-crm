@@ -14,14 +14,15 @@ import {
     DialogTrigger,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
+import type { Propiedad } from "../types/types";
 
-type Propiedad = {
-    id: number;
-    tipo: string;
-    estado: boolean;
-    nombre: string;
-    group_id: number;
-};
+// type Propiedad = {
+//     id: number;
+//     tipo: string;
+//     estado: boolean;
+//     nombre: string;
+//     group_id: number;
+// };
 
 const initialState = {
     success: "",

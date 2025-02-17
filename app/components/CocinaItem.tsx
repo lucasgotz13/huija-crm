@@ -12,13 +12,7 @@ import { Button } from "./ui/button";
 import { AddIngredienteForm } from "./AddIngredienteForm";
 import { deleteIngrediente, updateIngrediente } from "../(main)/cocina/actions";
 import DeleteButton from "./DeleteButton";
-
-type Ingrediente = {
-    id: number;
-    nombre: string;
-    cantidad: number;
-    disponible: boolean;
-};
+import type { Ingrediente } from "../types/types";
 
 export default function CocinaItem({
     ingrediente,

@@ -6,11 +6,7 @@ import {
 import DeleteButton from "./DeleteButton";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
-
-type PropiedadGrupo = {
-    id: number;
-    nombre: string;
-};
+import type { PropiedadGrupo } from "../types/types";
 
 export default function EncargadoGroupItem({ item }: { item: PropiedadGrupo }) {
     return (
