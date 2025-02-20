@@ -105,6 +105,22 @@ export async function updatePropiedad(formData: FormData) {
     revalidatePath("/", "layout");
 }
 
+export async function sacarPropiedadGrupo(formData: FormData) {
+    const supabase = await createClient();
+
+    const propiedad = {
+        id: formData.get("id"),
+        group_id: null,
+    };
+
+    const { error } = await supabase
+        .from("propiedades")
+        .update(propiedad)
+        .eq("id", propiedad.id);
+
+    revalidatePath("/", "layout");
+}
+
 export async function borrarPropiedad(formData: FormData) {
     const supabase = await createClient();
 
@@ -134,15 +150,25 @@ export async function borrarGrupoPropiedades(formData: FormData) {
         id: formData.get("id"),
     };
 
-    console.log(propiedad);
+    // Primero eliminar todas las propiedades del grupo
+    const { error: deletePropiedadesError } = await supabase
+        .from("propiedades")
+        .delete()
+        .eq("group_id", propiedad.id);
 
-    const { error } = await supabase
+    if (deletePropiedadesError) {
+        console.log(deletePropiedadesError);
+        redirect("/error");
+    }
+
+    // Luego eliminar el grupo
+    const { error: deleteGrupoError } = await supabase
         .from("grupo_propiedades")
         .delete()
         .eq("id", propiedad.id);
 
-    if (error) {
-        console.log(error);
+    if (deleteGrupoError) {
+        console.log(deleteGrupoError);
         redirect("/error");
     }
 

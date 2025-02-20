@@ -76,7 +76,7 @@ export function EncargadoDashboard({
                         <EncargadoItem
                             key={item.id}
                             item={item}
-                            isGrouped={false}
+                            isGroupPage={false}
                             SubmitSwitch={SubmitSwitch}
                         />
                     );
@@ -86,7 +86,7 @@ export function EncargadoDashboard({
                 <EncargadoItem
                     key={groupItem.id}
                     item={groupItem}
-                    isGrouped={true}
+                    isGroupPage={true}
                 />
             ))}
         </div>

@@ -16,14 +16,6 @@ import {
 import { Button } from "./ui/button";
 import type { Propiedad } from "../types/types";
 
-// type Propiedad = {
-//     id: number;
-//     tipo: string;
-//     estado: boolean;
-//     nombre: string;
-//     group_id: number;
-// };
-
 const initialState = {
     success: "",
     errors: {
@@ -78,6 +70,7 @@ export default function EncargadoGroupPage({
                     key={propiedad.id}
                     item={propiedad}
                     SubmitSwitch={SubmitSwitch}
+                    isGroupPage={false}
                     isGrouped={true}
                 />
             ))}

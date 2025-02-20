@@ -3,6 +3,7 @@
 import {
     borrarGrupoPropiedades,
     borrarPropiedad,
+    sacarPropiedadGrupo,
     updatePropiedad,
 } from "../(main)/encargado/actions";
 import DeleteButton from "./DeleteButton";
@@ -11,22 +12,16 @@ import type { Propiedad, PropiedadGrupo } from "../types/types";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
-// type Propiedad = {
-//     id: number;
-//     nombre: string;
-//     tipo: string;
-//     estado: boolean;
-//     group_id: number | null;
-// };
-
 export default function EncargadoItem({
     item,
     SubmitSwitch = null,
-    isGrouped,
+    isGroupPage,
+    isGrouped = false,
 }: {
     item: Propiedad | PropiedadGrupo;
     SubmitSwitch?: any;
-    isGrouped: boolean;
+    isGroupPage: boolean;
+    isGrouped?: boolean;
 }) {
     return (
         <div className="bg-white border-2 p-4 rounded-lg shadow flex items-center justify-between">
@@ -34,8 +29,21 @@ export default function EncargadoItem({
                 {item.nombre}
             </Label>
             <div className="flex items-center gap-2">
-                {!isGrouped ? (
+                {!isGroupPage ? (
                     <>
+                        {isGrouped && (
+                            <form
+                                action={sacarPropiedadGrupo}
+                                className="flex items-center gap-2"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="id"
+                                    value={item.id}
+                                />
+                                <Button type="submit">Sacar del grupo</Button>
+                            </form>
+                        )}
                         <DeleteButton id={item.id} action={borrarPropiedad} />
                         <form
                             action={updatePropiedad}
