@@ -24,11 +24,11 @@ export default function EncargadoItem({
     isGrouped?: boolean;
 }) {
     return (
-        <div className="bg-white border-2 p-4 rounded-lg shadow flex items-center justify-between">
+        <div className="bg-white border-2 p-4 rounded-lg shadow flex flex-wrap items-center justify-between">
             <Label htmlFor={item.nombre} className="text-lg">
                 {item.nombre}
             </Label>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
                 {!isGroupPage ? (
                     <>
                         {isGrouped && (
