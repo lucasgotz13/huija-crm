@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+# Huija CRM
 
-First, run the development server:
+</div>
+Sistema de gestión para el restaurante "Huija" que permite administrar características, monitorear el clima y gestionar recursos del establecimiento.
 
+## 🌟 Características
+
+- **Gestión de características del establecimiento**
+  - Crear y administrar características individuales
+  - Agrupar características relacionadas (ej: ventanas, mesas)
+  - Control de estado (activo/inactivo)
+  - Organización jerárquica mediante grupos
+
+- **Widget del Clima**
+  - Información en tiempo real del clima 
+  - Muestra temperatura, condición, humedad y viento
+  - Actualización automática de datos
+
+- **Gestión de Ingredientes**
+  - Control de inventario
+  - Seguimiento de disponibilidad
+  - Gestión de cantidades
+
+## 🛠️ Tecnologías
+
+- **Frontend**
+  - Next.js 14 (App Router)
+  - TypeScript
+  - Tailwind CSS
+  - Shadcn/ui
+
+- **Backend**
+  - Supabase (Base de datos y autenticación)
+  - Server Actions
+  - API OpenWeather
+
+## 📦 Instalación
+
+1. Clona el repositorio:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/tu-usuario/huija-crm.git
+cd huija-crm
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Instala las dependencias:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Configura las variables de entorno:
+```
+NEXT_PUBLIC_SUPABASE_URL=tu_url_de_supabase
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_clave_anonima
+NEXT_PUBLIC_WEATHER_API_KEY=tu_clave_de_openweather
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Inicia el servidor de desarrollo:
+```bash
+npm run dev
+```
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## 📄 Licencia
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE.md](LICENSE.md) para más detalles.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 👥 Autores
 
-## Deploy on Vercel
+- **Lucas Gotz Baliner** -  [lucasgotz13](https://github.com/lucasgotz13)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🙏 Agradecimientos
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Shadcn por su increíble biblioteca de componentes UI
+- OpenWeather por su API del clima
+- Supabase por su plataforma backend
